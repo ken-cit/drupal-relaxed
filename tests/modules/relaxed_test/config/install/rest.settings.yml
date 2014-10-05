@@ -4,57 +4,63 @@ resources:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
     GET:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
     PUT:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
     POST:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
     DELETE:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
   relaxed:doc:default:
     HEAD:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
     GET:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
     PUT:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
     DELETE:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
   relaxed:bulk_docs:default:
     POST:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
   relaxed:revs_diff:default:
     POST:
       supported_formats:
         - json
       supported_auth:
-        - cookie
+        - basic_auth
+  relaxed:changes:default:
+    POST:
+      supported_formats:
+        - json
+      supported_auth:
+        - basic_auth
