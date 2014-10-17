@@ -66,6 +66,8 @@ class DocResourceTest extends ResourceTestBase {
 
       // Test the response for a fake revision using if-none-match header.
       $this->httpRequest("$db/" . $entity->uuid(), 'HEAD', NULL, NULL, array('if-none-match' => '11112222333344445555'));
+      // Test the response for a fake revision.
+      $response = $this->httpRequest("$db/" . $entity->uuid(), 'HEAD', array('rev' => '11112222333344445555'));
       $this->assertResponse('404', 'HTTP response code is correct.');
     }
   }
@@ -221,6 +223,10 @@ class DocResourceTest extends ResourceTestBase {
       $this->assertResponse('409', 'HTTP response code is correct.');
 
       $response = $this->httpRequest("$db/" . $entity->uuid(), 'DELETE', NULL, NULL, NULL, array('rev' => $second_rev));
+      $this->httpRequest("$db/" . $entity->uuid(), 'DELETE', array('rev' => $first_rev));
+      $this->assertResponse('409', 'HTTP response code is correct.');
+
+      $response = $this->httpRequest("$db/" . $entity->uuid(), 'DELETE', array('rev' => $second_rev));
       $this->assertResponse('200', 'HTTP response code is correct.');
       $data = Json::decode($response);
       $this->assertTrue(!empty($data['ok']), 'DELETE request returned ok.');
