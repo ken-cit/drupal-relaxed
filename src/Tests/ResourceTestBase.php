@@ -215,8 +215,8 @@ abstract class ResourceTestBase extends RESTTestBase {
    */
   protected function createWorkspace($name) {
     $entity = entity_create('workspace', array(
-      'id' => $name,
-    ));
+        'id' => $name,
+      ));
     return $entity;
   }
 
