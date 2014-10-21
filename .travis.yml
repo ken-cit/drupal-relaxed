@@ -10,6 +10,9 @@ mysql:
   encoding: utf8
 
 env:
+global:
+  - PATH=$PATH:/home/travis/.composer/vendor/bin
+matrix:
   - TEST_RELAXED=Drupal
   - TEST_RELAXED=CouchDB
 
