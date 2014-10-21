@@ -15,6 +15,7 @@ services:
 env:
   - TEST_RELAXED=Drupal
   - TEST_RELAXED=CouchDB
+
 global:
   - PATH=$PATH:/home/travis/.composer/vendor/bin
 
@@ -22,15 +23,10 @@ matrix:
   exclude:
     - env: TEST_RELAXED=Drupal
       php: 5.4
-      - services:
-          - couchdb
+      services: couchdb
     - env: TEST_RELAXED=Drupal
       php: 5.5
-      - services:
-        - couchdb
-
-#env:
-#  - PATH=$PATH:/home/travis/.composer/vendor/bin
+      services: couchdb
 
 before_install:
   # Update Composer so that the Drush installation doesn't fail.
