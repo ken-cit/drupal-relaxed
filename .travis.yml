@@ -9,18 +9,25 @@ mysql:
   username: root
   encoding: utf8
 
+services:
+  - couchdb
+
 env:
-global:
-  - PATH=$PATH:/home/travis/.composer/vendor/bin
-matrix:
   - TEST_RELAXED=Drupal
   - TEST_RELAXED=CouchDB
+global:
+  - PATH=$PATH:/home/travis/.composer/vendor/bin
 
 matrix:
-  include:
-    - services:
+  exclude:
+    - env: TEST_RELAXED=Drupal
+      php: 5.4
+      - services:
+          - couchdb
+    - env: TEST_RELAXED=Drupal
+      php: 5.5
+      - services:
         - couchdb
-      env: TEST_RELAXED=CouchDB
 
 #env:
 #  - PATH=$PATH:/home/travis/.composer/vendor/bin
