@@ -64,10 +64,10 @@ before_script:
   # Enable required modules and ignore any output to not break the test.
   - drush --yes pm-enable key_value, multiversion, relaxed || true
 
+script:
   # Create a CouchDB database.
   - if [[ "$TEST_RELAXED" == CouchDB ]]; then curl -X PUT localhost:5984/test_db; fi
 
-script:
   # Enable Simpletest and run Simpletest tests.
   - cd $TRAVIS_BUILD_DIR/../drupal
   - drush en --yes simpletest
