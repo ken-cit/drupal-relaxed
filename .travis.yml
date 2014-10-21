@@ -55,6 +55,9 @@ before_script:
   # Enable required modules and ignore any output to not break the test.
   - drush --yes pm-enable key_value, multiversion, relaxed || true
 
+  # Create a CouchDB database.
+  - if [[ "$TEST_RELAXED" == CouchDB ]]; then curl -X PUT localhost:5984/test_db; fi
+
 script:
   - cd $TRAVIS_BUILD_DIR/../drupal
   - bash $SCRIPT
