@@ -69,9 +69,9 @@ before_script:
 
 script:
   # Enable Simpletest and run Simpletest tests.
+  - cd $TRAVIS_BUILD_DIR/../drupal
   - drush en --yes simpletest
   - drush cr
-  - cd $TRAVIS_BUILD_DIR/../drupal
   - php core/scripts/run-tests.sh --verbose --color --concurrency 4 --php `which php` --url http://localhost "relaxed" | tee /tmp/test.txt ; export TEST_EXIT=${PIPESTATUS[0]}
   # Simpletest does not exit with code 0 on success, so we will need to analyze
   # the output to ascertain whether the tests passed.
