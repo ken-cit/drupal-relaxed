@@ -9,8 +9,21 @@ mysql:
   username: root
   encoding: utf8
 
+services:
+  - couchdb
+
 env:
-  - PATH=$PATH:/home/travis/.composer/vendor/bin
+  - TEST_RELAXED=Drupal
+  - TEST_RELAXED=CouchDB
+
+matrix:
+  include:
+    - services:
+        - couchdb
+      env: TEST_RELAXED=CouchDB
+
+#env:
+#  - PATH=$PATH:/home/travis/.composer/vendor/bin
 
 before_install:
   # Update Composer so that the Drush installation doesn't fail.
@@ -47,6 +60,9 @@ before_script:
 
   # Enable required modules and ignore any output to not break the test.
   - drush --yes pm-enable key_value, multiversion, relaxed || true
+
+  # Create a CouchDB database.
+  - if [[ "$TEST_RELAXED" == CouchDB ]]; then curl -X PUT localhost:5984/test_db; fi
 
 script:
   # Enable Simpletest and run Simpletest tests.
