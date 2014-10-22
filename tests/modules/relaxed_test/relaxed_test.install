@@ -7,6 +7,13 @@ function relaxed_test_install() {
   // Create a new user with admin role.
   create_user('test_user', 'pass', 'administrator');
 
+  $workspace = entity_create('workspace', array(
+      'id' => 'test_workspace',
+    ));
+  $workspace->save();
+  $manager = \Drupal::service('multiversion.manager');
+  $manager->setActiveWorkspaceName('test_workspace');
+
   $entities_number = 10;
   $entity_types = array('entity_test_rev');
   foreach ($entity_types as $entity_type) {
