@@ -9,19 +9,16 @@ mysql:
   username: root
   encoding: utf8
 
-services:
-  - couchdb
-
 env:
   - TEST_RELAXED=Drupal
   - TEST_RELAXED=CouchDB
 
 matrix:
-  exclude:
-    - env: TEST_RELAXED=Drupal
+  include:
+    - env: TEST_RELAXED=CouchDB
       php: 5.4
       services: couchdb
-    - env: TEST_RELAXED=Drupal
+    - env: TEST_RELAXED=CouchDB
       php: 5.5
       services: couchdb
 
@@ -63,14 +60,21 @@ before_script:
   - drush --yes pm-enable key_value, multiversion, relaxed || true
 
 script:
-  # Create a CouchDB database.
-  - if [[ "$TEST_RELAXED" == CouchDB ]]; then curl -X PUT localhost:5984/test_db; fi
-
   # Enable Simpletest and run Simpletest tests.
   - cd $TRAVIS_BUILD_DIR/../drupal
   - drush en --yes simpletest
   - drush cr
-  - php core/scripts/run-tests.sh --verbose --color --concurrency 4 --php `which php` --url http://localhost "relaxed" | tee /tmp/test.txt ; export TEST_EXIT=${PIPESTATUS[0]}
+
+  # Run Drupal tests.
+  - if [[ "$TEST_RELAXED" == Drupal ]];
+    then php core/scripts/run-tests.sh --verbose --color --concurrency 4 --php `which php` --url http://localhost "relaxed" | tee /tmp/test.txt;
+    export TEST_EXIT=${PIPESTATUS[0]}; fi
+
+  # Create a CouchDB database and enable the relaxed_test module.
+  - if [[ "$TEST_RELAXED" == CouchDB ]];
+    then curl -X PUT localhost:5984/test_db;
+    drush --yes pm-enable relaxed_test || true; fi
+
   # Simpletest does not exit with code 0 on success, so we will need to analyze
   # the output to ascertain whether the tests passed.
   - TEST_SIMPLETEST=$(! egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /tmp/test.txt > /dev/null)$?
