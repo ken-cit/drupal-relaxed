@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function relaxed_test_install() {
+  $entities_number = 10;
+  $entity_types = array('entity_test_rev');
+  foreach ($entity_types as $entity_type) {
+    while ($entities_number > 0) {
+      $entity = entity_create($entity_type);
+      $entity->save();
+      $entities_number--;
+    }
+  }
+}
