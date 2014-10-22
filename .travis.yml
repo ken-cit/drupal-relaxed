@@ -16,9 +16,6 @@ env:
   - TEST_RELAXED=Drupal
   - TEST_RELAXED=CouchDB
 
-global:
-  - PATH=$PATH:/home/travis/.composer/vendor/bin
-
 matrix:
   exclude:
     - env: TEST_RELAXED=Drupal
@@ -48,6 +45,7 @@ install:
   - sudo service apache2 restart
 
   # Install Drush.
+  - export PATH=$PATH:/home/travis/.composer/vendor/bin
   - composer global require drush/drush:7.0.0-alpha5
 
 before_script:
