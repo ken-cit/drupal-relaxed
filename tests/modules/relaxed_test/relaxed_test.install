@@ -4,6 +4,9 @@
  * Implements hook_install().
  */
 function relaxed_test_install() {
+  // Create a new user with admin role.
+  create_user('test_user', 'pass', 'administrator');
+
   $entities_number = 10;
   $entity_types = array('entity_test_rev');
   foreach ($entity_types as $entity_type) {
@@ -13,4 +16,22 @@ function relaxed_test_install() {
       $entities_number--;
     }
   }
+}
+
+function create_user($name, $pass, $rid) {
+  $edit = array();
+  $edit['name']   = $name;
+  $edit['mail']   = $edit['name'] . '@example.com';
+  $edit['pass']   = $pass;
+  $edit['status'] = 1;
+  if ($rid) {
+    $edit['roles'] = array($rid);
+  }
+
+  $account = entity_create('user', $edit);
+  $account->save();
+
+  // Add the raw password so that we can log in as this user.
+  $account->pass_raw = $edit['pass'];
+  return $account;
 }
