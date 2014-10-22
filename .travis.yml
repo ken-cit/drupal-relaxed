@@ -56,9 +56,5 @@ before_script:
   - drush --yes pm-enable key_value, multiversion, relaxed || true
 
 script:
-  # Create a CouchDB database.
-  - if [[ "$TEST_RELAXED" == CouchDB ]]; then curl -X PUT localhost:5984/test_db; fi
-
-script:
   - cd $TRAVIS_BUILD_DIR/../drupal
   - bash $SCRIPT
