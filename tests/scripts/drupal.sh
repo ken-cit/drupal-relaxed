@@ -2,7 +2,6 @@
 
 set -ev
 # Enable Simpletest.
-cd $TRAVIS_BUILD_DIR/../drupal
 drush en --yes simpletest
 drush cr
 php core/scripts/run-tests.sh --verbose --color --concurrency 4 --php `which php` --url http://localhost "relaxed" | tee /tmp/test.txt
