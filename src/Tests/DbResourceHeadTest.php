@@ -24,5 +24,11 @@ class DbResourceHeadTest extends ResourceTestBase {
     $this->assertResponse('200', 'HTTP response code is correct.');
     $this->assertHeader('content-type', $this->defaultMimeType);
     $this->assertTrue(empty($response), 'HEAD request returned no body.');
+
+    // Test the HEAD request with empty Accept header.
+    $response = $this->httpRequest('default', 'HEAD', NULL);
+    $this->assertResponse('200', 'HTTP response code is correct.');
+    $this->assertHeader('content-type', $this->defaultMimeType);
+    $this->assertTrue(empty($response), 'HEAD request returned no body.');
   }
 }
