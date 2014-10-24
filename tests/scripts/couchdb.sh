@@ -7,6 +7,7 @@ curl -X PUT localhost:5984/test_db
 drush en --yes simpletest
 drush cr
 curl -v -H "Accept:application/json" -H "Content-Type:application/json" -X POST -d '{"source":"http://user:pass@localhost/relaxed/default","target":"http://localhost:5984/test_db"}' http://localhost:5984/_replicate | tee /tmp/test_couchdb.txt
+curl -X GET http://localhost:5984/test_db/_all_docs
 sudo cat /var/log/apache2/access.log
 sudo cat /var/log/apache2/forensic.log
 export TEST_EXIT=${PIPESTATUS[0]}
