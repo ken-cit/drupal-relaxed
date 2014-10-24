@@ -6,11 +6,7 @@ curl -X PUT localhost:5984/test_db
 # Enable Simpletest.
 drush en --yes simpletest
 drush cr
-
-# Check if the frontpage can be requested.
-curl -X GET localhost
-
-curl -v -H "Accept:application/json" -H "Content-Type:application/json" -X POST -d '{"source":"http://user:pass@localhost/relaxed/default","target":"localhost:5984/test_db"}' http://localhost:5984/_replicate | tee /tmp/test_couchdb.txt
+curl -v -H "Accept:application/json" -H "Content-Type:application/json" -X POST -d '{"source":"http://user:pass@localhost/relaxed/default","target":"http://localhost:5984/test_db"}' http://localhost:5984/_replicate | tee /tmp/test_couchdb.txt
 sudo cat /var/log/apache2/access.log
 sudo cat /var/log/apache2/forensic.log
 export TEST_EXIT=${PIPESTATUS[0]}
