@@ -87,3 +87,19 @@ resources:
         - json
       supported_auth:
         - basic_auth
+  'relaxed:local:doc':
+    HEAD:
+      supported_formats:
+        - json
+      supported_auth:
+        - basic_auth
+    GET:
+      supported_formats:
+        - json
+      supported_auth:
+        - basic_auth
+    PUT:
+      supported_formats:
+        - json
+      supported_auth:
+        - basic_auth
