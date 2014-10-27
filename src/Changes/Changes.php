@@ -58,7 +58,7 @@ class Changes implements ChangesInterface {
         'seq' => $change['local_seq'],
       );
       if ($change['deleted']) {
-        $change_result['deleted'] = $change['deleted'];
+        $change_result['deleted'] = TRUE;
       }
       $result['results'][] = $change_result;
     }
