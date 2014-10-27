@@ -111,6 +111,7 @@ class ChangesTest extends ResourceTestBase {
     $response = $this->httpRequest("$db/_changes", 'GET', NULL, $this->defaultMimeType);
     $this->assertResponse('200', 'HTTP response code is correct.');
     $this->assertHeader('content-type', $this->defaultMimeType);
+    $this->assertTrue($this->drupalGetHeader('x-relaxed-etag'), 'The request returned the X-Relaxed-ETag header.');
 
     $data = Json::decode($response);
     $this->assertTrue(

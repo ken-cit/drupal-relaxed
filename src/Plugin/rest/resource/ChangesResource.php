@@ -31,8 +31,9 @@ class ChangesResource extends ResourceBase {
 
     $changes = \Drupal::service('relaxed.changes');
     $result = $changes->useWorkspace($workspace->id())->getNormal();
+    $hash = md5(serialize($result));
 
-    return new ResourceResponse($result, 200);
+    return new ResourceResponse($result, 200, array('X-Relaxed-ETag' => $hash));
   }
 
 }

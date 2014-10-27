@@ -4,19 +4,10 @@
  * Implements hook_install().
  */
 function relaxed_test_install() {
-  // Create a new user with admin role.
-  create_user('test_user', 'pass', 'administrator');
-
-  /*$workspace = entity_create('workspace', array(
-      'id' => 'test_workspace',
-    ));
-  $workspace->save();
-  $manager = \Drupal::service('multiversion.manager');
-  $manager->setActiveWorkspaceName('test_workspace');*/
-
-  $entities_number = 10;
+  //Create content for testing.
   $entity_types = array('entity_test_rev');
   foreach ($entity_types as $entity_type) {
+    $entities_number = 5;
     while ($entities_number > 0) {
       $entity = entity_create($entity_type);
       $entity->save();
@@ -25,20 +16,3 @@ function relaxed_test_install() {
   }
 }
 
-function create_user($name, $pass, $rid) {
-  $edit = array();
-  $edit['name']   = $name;
-  $edit['mail']   = $edit['name'] . '@example.com';
-  $edit['pass']   = $pass;
-  $edit['status'] = 1;
-  if ($rid) {
-    $edit['roles'] = array($rid);
-  }
-
-  $account = entity_create('user', $edit);
-  $account->save();
-
-  // Add the raw password so that we can log in as this user.
-  $account->pass_raw = $edit['pass'];
-  return $account;
-}
