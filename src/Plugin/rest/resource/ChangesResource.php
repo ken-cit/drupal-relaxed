@@ -32,7 +32,7 @@ class ChangesResource extends ResourceBase {
     $changes = \Drupal::service('relaxed.changes');
     $result = $changes->useWorkspace($workspace->id())->getNormal();
 
-    return new ResourceResponse($result, 200, array('Transfer-Encoding' => 'chunked'));
+    return new ResourceResponse($result, 200);
   }
 
 }
