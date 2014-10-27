@@ -52,7 +52,7 @@ class Changes implements ChangesInterface {
     foreach ($changes as $change) {
       $result['results'][] = array(
         'changes' => array(
-          'rev' => $change['rev'],
+          array('rev' => $change['rev']),
         ),
         'deleted' => $change['deleted'],
         'id' => $change['entity_uuid'],
