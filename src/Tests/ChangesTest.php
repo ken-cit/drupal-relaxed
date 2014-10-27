@@ -100,6 +100,13 @@ class ChangesTest extends ResourceTestBase {
       'id' => $entity->uuid(),
       'rev' => $entity->_revs_info->rev,
     );
+    // Delete the entity.
+    $entity->delete();
+    $revs[] = array(
+      'id' => $entity->uuid(),
+      'rev' => $entity->_revs_info->rev,
+      'deleted' => TRUE,
+    );
 
     $response = $this->httpRequest("$db/_changes", 'GET', NULL, $this->defaultMimeType);
     $this->assertResponse('200', 'HTTP response code is correct.');
@@ -119,6 +126,10 @@ class ChangesTest extends ResourceTestBase {
     foreach ($data['results'] as $key => $rev) {
       if ($revs[$key]['id'] != $rev['id']
         || $revs[$key]['rev'] != $rev['changes'][0]['rev']) {
+        $correct_data = FALSE;
+      }
+      if (isset($revs[$key]['deleted']) && !isset($rev['deleted'])
+        || isset($rev['deleted']) && !isset($revs[$key]['deleted'])) {
         $correct_data = FALSE;
       }
     }

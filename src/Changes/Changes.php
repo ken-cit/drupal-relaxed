@@ -50,14 +50,17 @@ class Changes implements ChangesInterface {
 
     // Format the result array.
     foreach ($changes as $change) {
-      $result['results'][] = array(
+      $change_result = array(
         'changes' => array(
           array('rev' => $change['rev']),
         ),
-        'deleted' => $change['deleted'],
         'id' => $change['entity_uuid'],
         'seq' => $change['local_seq'],
       );
+      if ($change['deleted']) {
+        $change_result['deleted'] = $change['deleted'];
+      }
+      $result['results'][] = $change_result;
     }
 
     return $result;
