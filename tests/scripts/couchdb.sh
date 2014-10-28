@@ -6,6 +6,11 @@ curl -X PUT localhost:5984/test_db
 # Enable Simpletest.
 drush en --yes simpletest
 drush cr
+
+# Get the changes from the drupal database.
+curl -X GET http://user:pass@localhost/relaxed/default/_changes
+
+# Do the replication.
 curl -v -H "Accept:application/json" -H "Content-Type:application/json" -X POST -d '{"source":"http://user:pass@localhost/relaxed/default","target":"http://localhost:5984/test_db"}' http://localhost:5984/_replicate | tee /tmp/test_couchdb.txt
 curl -X GET http://localhost:5984/test_db/_all_docs
 
