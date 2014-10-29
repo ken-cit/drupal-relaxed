@@ -87,6 +87,8 @@ class DocResourceTest extends ResourceTestBase {
 
       $entity = entity_create($entity_type);
       $entity->save();
+      $entity->name = $this->randomMachineName();
+      $entity->save();
 
       $response = $this->httpRequest("$db/" . $entity->uuid(), 'GET', NULL);
       $this->assertResponse('200', 'HTTP response code is correct.');
@@ -110,8 +112,9 @@ class DocResourceTest extends ResourceTestBase {
       foreach ($entity->_revs_info as $item) {
         $open_revs[] = $item->rev;
       }
-      $open_revs_string = '[' . implode(',', $open_revs) . ']';
-      $this->httpRequest("$db/" . $entity->uuid(), 'GET', NULL, NULL, NULL, array('open_revs' => $open_revs_string));
+      $open_revs_string = json_encode($open_revs);
+      $response = $this->httpRequest("$db/" . $entity->uuid(), 'GET', NULL, NULL, NULL, array('open_revs' => $open_revs_string));
+      $data = Json::decode($response);
 
       // Test the response for a fake revision.
       $this->httpRequest("$db/" . $entity->uuid(), 'GET', NULL, NULL, NULL, array('rev' => '11112222333344445555'));
