@@ -4,8 +4,7 @@ set -ev
 # Create a new CouchDB database.
 curl -X PUT localhost:5984/test_db
 
-git clone --branch master https://github.com/jeqq/entity_test.git $TRAVIS_BUILD_DIR/../drupal/modules/entity_test
-git clone --branch master https://github.com/jeqq/relaxed_test_replication.git $TRAVIS_BUILD_DIR/../drupal/modules/relaxed_test_replication
+git clone --branch master https://github.com/dickolsson/drupal-relaxed_test.git $TRAVIS_BUILD_DIR/../drupal/modules/relaxed_test
 
 # Enable Simpletest.
 drush en --yes simpletest, entity_test, relaxed_test_replication || true
