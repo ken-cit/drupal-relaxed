@@ -7,14 +7,14 @@ curl -X PUT localhost:5984/test_db
 git clone --branch master https://github.com/dickolsson/drupal-relaxed_test.git $TRAVIS_BUILD_DIR/../drupal/modules/relaxed_test
 
 # Enable Simpletest.
-drush en --yes simpletest, entity_test, relaxed_test_replication || true
+drush en --yes simpletest, relaxed_test || true
 drush cr
 
 # Get the changes from the drupal database.
 curl -X GET http://user:pass@localhost/relaxed/default/_changes
 
 # Do the replication.
-curl -v -H "Accept:application/json" -H "Content-Type:application/json" -X POST -d '{"source":"http://user:pass@localhost/relaxed/default","target":"http://localhost:5984/test_db"}' http://localhost:5984/_replicate | tee /tmp/test_couchdb.txt
+nohup curl -v -H "Accept:application/json" -H "Content-Type:application/json" -X POST -d '{"source":"http://user:pass@localhost/relaxed/default","target":"http://localhost:5984/test_db"}' http://localhost:5984/_replicate | tee /tmp/test_couchdb.txt &
 curl -X GET http://localhost:5984/test_db/_all_docs
 
 # Show the logs from access.log
