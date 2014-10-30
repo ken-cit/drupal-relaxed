@@ -6,15 +6,16 @@ mysql:
   encoding: utf8
 
 matrix:
+  allow_failures:
   include:
-    - env: TEST_RELAXED=Drupal SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
+    - env: SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
       php: 5.4
-    - env: TEST_RELAXED=Drupal SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
+    - env: SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
       php: 5.5
-    - env: TEST_RELAXED=CouchDB SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
+    - env: SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
       php: 5.4
       services: couchdb
-    - env: TEST_RELAXED=CouchDB SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
+    - env: SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
       php: 5.5
       services: couchdb
 
