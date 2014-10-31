@@ -1,33 +1,33 @@
 language: php
 
+php:
+  - 5.4
+  - 5.5
+
 mysql:
   database: drupal
   username: root
   encoding: utf8
 
+services:
+  - couchdb
+
+env:
+  matrix:
+    - SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
+    - SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
+
 matrix:
   allow_failures:
-  include:
-    - env: SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
-      php: 5.4
-    - env: SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
-      php: 5.5
     - env: SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
-      php: 5.4
-      services: couchdb
-    - env: SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
-      php: 5.5
-      services: couchdb
 
 before_install:
-  # Update Composer so that the Drush installation doesn't fail.
   - composer selfupdate
 
 install:
   # Install Apache.
   - sudo apt-get install apache2 libapache2-mod-fastcgi apache2-utils
   - sudo a2enmod log_forensic
-
 
   # Set up PHP-FPM.
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
@@ -53,10 +53,7 @@ before_script:
 
   # Install the site that will host our tests.
   - cd $TRAVIS_BUILD_DIR/../drupal
-  - php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes site-install --account-name=user --account-pass=pass --db-url=mysql://root:@127.0.0.1/drupal minimal
-
-  # Enable required modules and ignore any output to not break the test.
-  - drush --yes pm-enable key_value, multiversion, relaxed || true
+  - php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes site-install --account-name=admin --account-pass=admin --db-url=mysql://root:@127.0.0.1/drupal minimal
 
 script:
   - cd $TRAVIS_BUILD_DIR/../drupal

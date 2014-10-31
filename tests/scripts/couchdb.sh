@@ -1,32 +1,17 @@
 #!/bin/sh
 
 set -ev
-# Create a new CouchDB database.
-curl -X PUT localhost:5984/test_db
 
+# Enable dependencies.
 git clone --branch master https://github.com/dickolsson/drupal-relaxed_test.git $TRAVIS_BUILD_DIR/../drupal/modules/relaxed_test
+drush en --yes relaxed_test || true
 
-# Enable Simpletest.
-drush en --yes simpletest, relaxed_test || true
-drush cr
+# Create a target database and do the replication.
+curl -X PUT localhost:5984/target
+nohup curl -X POST -d '{"source": "http://admin:admin@localhost/relaxed/default", "target": "http://localhost:5984/target"}' http://localhost:5984/_replicate
+sleep 10
 
-# Get the changes from the drupal database.
-curl -X GET http://user:pass@localhost/relaxed/default/_changes
-
-# Do the replication.
-nohup curl -v -H "Accept:application/json" -H "Content-Type:application/json" -X POST -d '{"source":"http://user:pass@localhost/relaxed/default","target":"http://localhost:5984/test_db"}' http://localhost:5984/_replicate | tee /tmp/test_couchdb.txt &
-curl -X GET http://localhost:5984/test_db/_all_docs
-
-# Show the logs from access.log
-sudo cat /var/log/apache2/access.log
-
-# Show the logs from forensic.log
-sudo cat /var/log/apache2/forensic.log
-
-# Show the logs from couch.log
+# Output information useful for debugging.
 sudo cat /var/log/couchdb/couch.log
-
-export TEST_EXIT=${PIPESTATUS[0]}
-# Analyze the output to ascertain whether the tests passed.
-TEST_COUCHDB=$(! egrep -i "(error)" /tmp/test_couchdb.txt > /dev/null)$?
-if [ $TEST_EXIT -eq 0 ] && [ $TEST_COUCHDB -eq 0 ]; then exit 0; else exit 1; fi
+sudo cat /var/log/apache2/forensic.log
+curl -X GET http://localhost:5984/target/_all_docs
