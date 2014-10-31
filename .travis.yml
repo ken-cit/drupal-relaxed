@@ -20,9 +20,7 @@ env:
 matrix:
   allow_failures:
     - env: SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
-
-before_install:
-  - composer selfupdate
+  fast_finish: true
 
 install:
   # Install Apache.
@@ -42,6 +40,7 @@ install:
 
   # Install Drush.
   - export PATH=$PATH:/home/travis/.composer/vendor/bin
+  - composer selfupdate
   - composer global require drush/drush:7.0.0-alpha5
 
 before_script:
