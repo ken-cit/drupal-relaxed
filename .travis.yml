@@ -14,8 +14,8 @@ services:
 
 env:
   matrix:
-    - SCRIPT='modules/relaxed/tests/scripts/drupal.sh'
-    - SCRIPT='modules/relaxed/tests/scripts/couchdb.sh'
+    - SCRIPT='modules/relaxed/tests/bin/drupal.sh'
+    - SCRIPT='modules/relaxed/tests/bin/couchdb.sh'
 
 matrix:
   allow_failures:
